@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back">
 
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_marginTop="70dp"
+    android:layout_centerHorizontal="true"
+    android:layout_height="wrap_content">
+
     <ImageView
         android:id="@+id/callerImage"
+        android:layout_centerHorizontal="true"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="40dp"
@@ -17,6 +25,9 @@
 
     <TextView
         android:id="@+id/callerName"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/callerImage"
+        android:textColor="#fff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/callerImage"
@@ -27,6 +38,9 @@
 
     <TextView
         android:id="@+id/callerNumber"
+        android:layout_below="@+id/callerName"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/callerName"
@@ -35,21 +49,47 @@
         android:text="Caller Number"
         android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/rejectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/callerNumber"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/acceptButton"
-        android:text="Reject" />
+</RelativeLayout>
 
-    <Button
-        android:id="@+id/acceptButton"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/callerNumber"
-        app:layout_constraintLeft_toRightOf="@+id/rejectButton"
-        app:layout_constraintRight_toRightOf="parent"
-        android:text="Accept" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:padding="16dp"
+        tools:ignore="MissingConstraints">
+
+
+        <RelativeLayout
+            android:layout_marginBottom="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="80dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/rejectButton"
+                    android:layout_marginRight="90dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/ic_reject_button" />
+
+                <Button
+
+                    android:id="@+id/acceptButton"
+                    android:layout_marginLeft="90dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/ic_accept_button" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>
