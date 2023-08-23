@@ -1,13 +1,15 @@
 package mobioptions.fakecall;
 
 public class Character {
-    public int imageResource;
-    public String name;
-    public String number;
+    int imageResource;
+    String name;
+    String number;
+    int audioResource;
 
-    public Character(int imageResource, String name, String number) {
+    Character(int imageResource, String name, String number, int audioResource) {
         this.imageResource = imageResource;
         this.name = name;
         this.number = number;
+        this.audioResource = audioResource;
     }
 }

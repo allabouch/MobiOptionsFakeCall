@@ -15,6 +15,11 @@ public class CharacterAdapter extends ArrayAdapter<MainActivity.Character> {
     }
 
     @Override
+    public MainActivity.Character getItem(int position) {
+        return super.getItem(position);
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         MainActivity.Character character = getItem(position);
 

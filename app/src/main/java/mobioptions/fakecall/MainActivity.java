@@ -2,22 +2,46 @@ package mobioptions.fakecall;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ListView;
-
 import androidx.appcompat.app.AppCompatActivity;
+import com.applovin.adview.AppLovinInterstitialAd;
+import com.applovin.adview.AppLovinInterstitialAdDialog;
+import com.applovin.sdk.AppLovinAd;
+import com.applovin.sdk.AppLovinAdLoadListener;
+import com.applovin.sdk.AppLovinSdk;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    private AppLovinInterstitialAdDialog interstitialAd;
+    private AppLovinAd loadedAd; // Store the loaded ad here
+    private boolean isAdLoaded = false; // Boolean flag to track if ad is loaded
 
     private Character[] characters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        // Initialize AppLovin SDK
+        AppLovinSdk.initializeSdk(this);
+
+        // Load the interstitial ad
+        String zoneId = "8978dcd968620b9d"; // Replace with your zone ID
+        AppLovinSdk.getInstance(this).getAdService().loadNextAdForZoneId(zoneId, new AppLovinAdLoadListener() {
+            @Override
+            public void adReceived(AppLovinAd ad) {
+                interstitialAd = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(MainActivity.this), MainActivity.this);
+                loadedAd = ad; // Store the loaded ad
+                isAdLoaded = true; // Set flag to true
+            }
+
+            @Override
+            public void failedToReceiveAd(int errorCode) {
+                isAdLoaded = false; // Set flag to false
+            }
+        });
 
         characters = new Character[]{
                 new Character(R.drawable.character, "John Smith", "123-456-7890", R.raw.call_1),
@@ -30,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 new Character(R.drawable.character, "Jessica Thompson", "890-123-4567", R.raw.samsung),
                 new Character(R.drawable.character, "Daniel White", "901-234-5678", R.raw.samsung),
                 new Character(R.drawable.character, "Sophia Lewis", "012-345-6789", R.raw.samsung),
-                // ... Other characters
         };
 
         CharacterAdapter adapter = new CharacterAdapter(this, characters);
@@ -44,7 +67,11 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("name", selectedCharacter.name);
             intent.putExtra("number", selectedCharacter.number);
             intent.putExtra("audioResource", selectedCharacter.audioResource);
-            startActivity(intent);
+            if (isAdLoaded) {
+                interstitialAd.showAndRender(loadedAd); // Use the loaded ad here
+            } else {
+                startActivity(intent);
+            }
         });
     }
 
