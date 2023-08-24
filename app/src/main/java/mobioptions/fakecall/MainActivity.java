@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements MaxAdListener {
 
     private MaxInterstitialAd interstitialAd;
     private Character[] characters;
-    private Character selectedCharacter; // Variable to store selected character
+    private Character selectedCharacter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity implements MaxAdListener {
 
         interstitialAd = new MaxInterstitialAd("8978dcd968620b9d", this);
         interstitialAd.setListener(this);
-
-        // Load the first ad
         interstitialAd.loadAd();
 
         characters = new Character[]{
@@ -48,16 +46,15 @@ public class MainActivity extends AppCompatActivity implements MaxAdListener {
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            selectedCharacter = characters[position]; // Store the selected character
+            selectedCharacter = characters[position];
             if (interstitialAd.isReady()) {
                 interstitialAd.showAd();
             } else {
-                startFakeCallActivity(); // Call directly if ad is not ready
+                startFakeCallActivity();
             }
         });
     }
 
-    // Method to start FakeCallActivity
     private void startFakeCallActivity() {
         Intent intent = new Intent(MainActivity.this, FakeCallActivity.class);
         intent.putExtra("imageResource", selectedCharacter.imageResource);
@@ -68,38 +65,25 @@ public class MainActivity extends AppCompatActivity implements MaxAdListener {
     }
 
     @Override
-    public void onAdLoaded(final MaxAd maxAd) {
-        // Ad has been loaded
-    }
+    public void onAdLoaded(final MaxAd maxAd) {}
 
     @Override
-    public void onAdLoadFailed(final String adUnitId, final MaxError error) {
-        // Handle ad load failure
-    }
+    public void onAdLoadFailed(final String adUnitId, final MaxError error) {}
 
     @Override
-    public void onAdDisplayFailed(final MaxAd maxAd, final MaxError error) {
-        // Handle ad display failure
-    }
+    public void onAdDisplayFailed(final MaxAd maxAd, final MaxError error) {}
 
     @Override
-    public void onAdDisplayed(final MaxAd maxAd) {
-        // Ad has been displayed
-    }
+    public void onAdDisplayed(final MaxAd maxAd) {}
 
     @Override
     public void onAdHidden(final MaxAd maxAd) {
-        // Interstitial ad is hidden. Pre-load the next ad
-        interstitialAd.loadAd();
-
-        // Start the FakeCallActivity
         startFakeCallActivity();
+        interstitialAd.loadAd(); // Load another ad
     }
 
     @Override
-    public void onAdClicked(final MaxAd maxAd) {
-        // Ad has been clicked
-    }
+    public void onAdClicked(final MaxAd maxAd) {}
 
     public static class Character {
         int imageResource;

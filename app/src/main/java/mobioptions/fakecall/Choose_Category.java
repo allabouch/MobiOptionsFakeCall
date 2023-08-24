@@ -63,7 +63,7 @@ public class Choose_Category extends AppCompatActivity implements MaxAdListener 
     }
 
     private void chooseCategory(String category) {
-        Intent intent = new Intent(Choose_Category.this, MainActivity.class);
+        Intent intent = new Intent(Choose_Category.this, Downloading.class);
         intent.putExtra("category", category);
         startActivity(intent);
     }
