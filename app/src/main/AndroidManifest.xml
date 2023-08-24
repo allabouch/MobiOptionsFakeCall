@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
@@ -14,13 +14,19 @@
         android:theme="@style/Theme.MobiOptionsFakeCall"
         tools:targetApi="31">
         <activity
+            android:name=".Choose_Category"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".CallActivity"
             android:exported="false" />
         <activity
             android:name=".FakeCallActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +35,9 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="applovin.sdk.key"
-            android:value="q3p2VPTpJ_0sxXuMK76TaewnnTTgO7TupZooFAvmVQ6E7M7OEURF0REVyGW0WeI2HKcSIkJ6M8kcSHWQhplQqk"/>
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="q3p2VPTpJ_0sxXuMK76TaewnnTTgO7TupZooFAvmVQ6E7M7OEURF0REVyGW0WeI2HKcSIkJ6M8kcSHWQhplQqk" />
     </application>
 
 </manifest>

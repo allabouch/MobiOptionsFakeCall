@@ -3,45 +3,32 @@ package mobioptions.fakecall;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
-import androidx.appcompat.app.AppCompatActivity;
-import com.applovin.adview.AppLovinInterstitialAd;
-import com.applovin.adview.AppLovinInterstitialAdDialog;
-import com.applovin.sdk.AppLovinAd;
-import com.applovin.sdk.AppLovinAdLoadListener;
+import com.applovin.mediation.MaxAd;
+import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxError;
+import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdk;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MaxAdListener {
 
-
-    private AppLovinInterstitialAdDialog interstitialAd;
-    private AppLovinAd loadedAd; // Store the loaded ad here
-    private boolean isAdLoaded = false; // Boolean flag to track if ad is loaded
-
+    private MaxInterstitialAd interstitialAd;
     private Character[] characters;
+    private Character selectedCharacter; // Variable to store selected character
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize AppLovin SDK
+        AppLovinSdk.getInstance(this).setMediationProvider("max");
         AppLovinSdk.initializeSdk(this);
 
-        // Load the interstitial ad
-        String zoneId = "8978dcd968620b9d"; // Replace with your zone ID
-        AppLovinSdk.getInstance(this).getAdService().loadNextAdForZoneId(zoneId, new AppLovinAdLoadListener() {
-            @Override
-            public void adReceived(AppLovinAd ad) {
-                interstitialAd = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(MainActivity.this), MainActivity.this);
-                loadedAd = ad; // Store the loaded ad
-                isAdLoaded = true; // Set flag to true
-            }
+        interstitialAd = new MaxInterstitialAd("8978dcd968620b9d", this);
+        interstitialAd.setListener(this);
 
-            @Override
-            public void failedToReceiveAd(int errorCode) {
-                isAdLoaded = false; // Set flag to false
-            }
-        });
+        // Load the first ad
+        interstitialAd.loadAd();
 
         characters = new Character[]{
                 new Character(R.drawable.character, "John Smith", "123-456-7890", R.raw.call_1),
@@ -61,18 +48,57 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            Character selectedCharacter = characters[position];
-            Intent intent = new Intent(MainActivity.this, FakeCallActivity.class);
-            intent.putExtra("imageResource", selectedCharacter.imageResource);
-            intent.putExtra("name", selectedCharacter.name);
-            intent.putExtra("number", selectedCharacter.number);
-            intent.putExtra("audioResource", selectedCharacter.audioResource);
-            if (isAdLoaded) {
-                interstitialAd.showAndRender(loadedAd); // Use the loaded ad here
+            selectedCharacter = characters[position]; // Store the selected character
+            if (interstitialAd.isReady()) {
+                interstitialAd.showAd();
             } else {
-                startActivity(intent);
+                startFakeCallActivity(); // Call directly if ad is not ready
             }
         });
+    }
+
+    // Method to start FakeCallActivity
+    private void startFakeCallActivity() {
+        Intent intent = new Intent(MainActivity.this, FakeCallActivity.class);
+        intent.putExtra("imageResource", selectedCharacter.imageResource);
+        intent.putExtra("name", selectedCharacter.name);
+        intent.putExtra("number", selectedCharacter.number);
+        intent.putExtra("audioResource", selectedCharacter.audioResource);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onAdLoaded(final MaxAd maxAd) {
+        // Ad has been loaded
+    }
+
+    @Override
+    public void onAdLoadFailed(final String adUnitId, final MaxError error) {
+        // Handle ad load failure
+    }
+
+    @Override
+    public void onAdDisplayFailed(final MaxAd maxAd, final MaxError error) {
+        // Handle ad display failure
+    }
+
+    @Override
+    public void onAdDisplayed(final MaxAd maxAd) {
+        // Ad has been displayed
+    }
+
+    @Override
+    public void onAdHidden(final MaxAd maxAd) {
+        // Interstitial ad is hidden. Pre-load the next ad
+        interstitialAd.loadAd();
+
+        // Start the FakeCallActivity
+        startFakeCallActivity();
+    }
+
+    @Override
+    public void onAdClicked(final MaxAd maxAd) {
+        // Ad has been clicked
     }
 
     public static class Character {
