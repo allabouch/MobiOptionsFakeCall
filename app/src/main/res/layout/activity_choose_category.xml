@@ -2,28 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/native_ad_layout"
+        android:layout_above="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="380dp" />
+
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="#FFFFFF"
         android:text="Choose a Character Category"
-        android:textSize="24sp"
-        android:layout_gravity="center_horizontal" />
+        android:textSize="24sp" />
 
     <Button
+        android:layout_below="@+id/textView"
         android:id="@+id/btn_category_1"
+        android:background="@drawable/button_background"
         android:layout_width="match_parent"
+        android:textColor="#fff"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Category 1" />
+        android:text="Go To fake call Characters" />
 
     <Button
+        android:layout_below="@+id/btn_category_1"
+        android:textColor="#fff"
+        android:background="@drawable/button_background"
         android:id="@+id/btn_category_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Category 2" />
+        android:text="More apps" />
+
+
+</RelativeLayout>
 
 </LinearLayout>
