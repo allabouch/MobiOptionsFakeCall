@@ -104,8 +104,11 @@ public class Choose_Category extends AppCompatActivity implements MaxAdListener 
             public void onClick(View v) {
                 if (interstitialAd.isReady()) {
                     interstitialAd.showAd();
+                    // Note: The action to go to the next activity will be taken care of in `onAdHidden`.
+                } else {
+                    // If the ad isn't ready, directly go to the next activity
+                    chooseCategory("Category 1");
                 }
-                // Wait until ad is closed to call chooseCategory
             }
         });
 
@@ -147,7 +150,7 @@ public class Choose_Category extends AppCompatActivity implements MaxAdListener 
         interstitialAd.loadAd();
 
         // Now that the ad is closed, call chooseCategory with the chosen category
-        String category = "Category 1"; // or "Category 2" depending on the button clicked
+        String category = "Category 1"; // This needs to be set based on which button was clicked
         chooseCategory(category);
     }
 
@@ -163,6 +166,7 @@ public class Choose_Category extends AppCompatActivity implements MaxAdListener 
 
     @Override
     public void onAdDisplayFailed(MaxAd maxAd, MaxError maxError) {
+
 
     }
 }
